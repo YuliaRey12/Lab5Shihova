@@ -5,23 +5,16 @@ plugins {
 
 android {
     namespace = "com.example.lab5"
-    compileSdk = 34
+    compileSdk = 35 // Обновлено до последней версии
 
     defaultConfig {
         applicationId = "com.example.lab5"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35 // Обновлено до последней версии
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
     }
 
     buildFeatures {
@@ -40,6 +33,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.appcompat)
     implementation(libs.material)
 }
