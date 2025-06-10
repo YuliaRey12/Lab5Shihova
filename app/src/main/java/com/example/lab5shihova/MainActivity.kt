@@ -1,47 +1,37 @@
 package com.example.lab5shihova
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.lab5shihova.ui.theme.Lab5ShihovaTheme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.example.lab5.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            Lab5ShihovaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding.okButton.setOnClickListener {
+            val amountStr = binding.amountEditText.text.toString()
+            val amount = amountStr.toDoubleOrNull() ?: 0.0
+
+            val interestRate = when(binding.radioGroup.checkedRadioButtonId) {
+                R.id.threeMonthsRadioButton -> 0.03
+                R.id.sixMonthsRadioButton -> 0.05
+                R.id.oneYearRadioButton -> 0.09
+                else -> 0.0
             }
+
+            val result = amount * (1 + interestRate)
+            val resultText = "Итоговая сумма: %.2f рублей".format(result)
+
+            val intent = Intent(this, ResultActivity::class.java).apply {
+                putExtra("RESULT_TEXT", resultText)
+            }
+            startActivity(intent)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Lab5ShihovaTheme {
-        Greeting("Android")
     }
 }
